@@ -1,0 +1,11 @@
+Tutorial Raspberry Pi:
+https://learn.adafruit.com/adafruits-raspberry-pi-lesson-4-gpio-setup/overview
+
+Configuring I2C for Raspberry Pi:
+https://learn.adafruit.com/adafruits-raspberry-pi-lesson-4-gpio-setup/configuring-i2c
+
+https://learn.adafruit.com/adafruit-aht20/pinouts
+I2C address is 0x38
+
+https://learn.adafruit.com/adafruit-tsl2591/pinouts
+I2C address is 0x29
