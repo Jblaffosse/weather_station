@@ -18,20 +18,27 @@
 # ==================================================
 
 import time
-# TODO verify that the library is correctly imported
-import adafruit_ahtx0
+import Adafruit_DHT
+import board
+import busio
+import adafruit_tsl2561
+from flask import Flask, render_template
 
 # ==================================================
 # Constants
 # ==================================================
 
-# AHT20 Sensor - TBD constants
+# DHT22 Sensor
+DHT_SENSOR = Adafruit_DHT.DHT22
+DHT_PIN = 4  # GPIO pin connected to the DHT22 data pin
 
-# TSL2591 Light Sensor - TBD constants
+# TSL2561 Light Sensor
 i2c = busio.I2C(board.SCL, board.SDA)
 light_sensor = adafruit_tsl2561.TSL2561(i2c)
 
-# Flask Web Server Configuration - TBD constants
+# Flask Web Server Configuration
+deploy_ip_address = "127.0.0.1"
+deploy_port_number = 8080
 app = Flask(__name__)
 
 # ==================================================
@@ -40,7 +47,7 @@ app = Flask(__name__)
 
 def read_temperature_humidity():
     """
-    Reads temperature and humidity from the AHT20 sensor.
+    Reads temperature and humidity from the DHT22 sensor.
     
     Returns:
         tuple: Temperature in Celsius, Humidity in percentage
@@ -50,7 +57,7 @@ def read_temperature_humidity():
 
 def read_light_level():
     """
-    Reads the light level from the TSL2591 sensor.
+    Reads the light level from the TSL2561 sensor.
     
     Returns:
         float: Light level in lux
@@ -75,7 +82,7 @@ def index():
 
 if __name__ == "__main__":
     try:
-        app.run(debug=True, host='0.0.0.0', port=5000)
+        app.run(host=deploy_ip_address, port=deploy_port_number, debug=True)
     except KeyboardInterrupt:
         print("Program interrupted by user. Exiting...")
     except Exception as e:
