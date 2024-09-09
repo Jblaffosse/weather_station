@@ -12,7 +12,7 @@ https://www.raspberrypi.org/app/uploads/2012/12/quick-start-guide-v1.1.pdf
 
 ## Pinout
 
-As shown in the image "Raspberry Pi 4 Model B - Pinout.png," please connect the following cables:
+As shown in the image "docs/Raspberry Pi 4 Model B - Pinout.png," please connect the following cables:
 
 Raspberry Pi 4 Model B <-> Sensors using STEMMA QT
 
