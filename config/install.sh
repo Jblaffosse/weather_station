@@ -29,6 +29,9 @@ REQUIRED_PACKAGES=(
 # Python interpreter (change to python3 if needed)
 PYTHON="python3"
 
+# Pip interpreter
+PIP="pip3"
+
 # ==================================================
 # Functions
 # ==================================================
@@ -40,10 +43,17 @@ check_package() {
     $PYTHON -c "import $package" 2>/dev/null
 
     if [ $? -eq 0 ]; then
-        echo "$package is installed."
+        echo "[OK] $package is correctly installed."
     else
-        echo "$package is NOT installed."
-        echo "You can install it using: pip install $package"
+        echo "[WARNING] $package is NOT installed. Try to install the package..."
+        
+        $PIP install $package 2>/dev/null
+        if [ $? -eq 0 ]; then
+            echo "[OK] $package has been successfully installed!"
+        else
+            echo "[ERROR] An error occurs during the installation of $package... Please retry manually..."
+        fi
+        #echo "You can install it using: pip install $package"
     fi
 }
 
@@ -53,7 +63,9 @@ check_package() {
 
 echo "Starting Python package check..."
 for package in "${REQUIRED_PACKAGES[@]}"; do
+    echo "################"
     check_package $package
 done
 
+echo "################"
 echo "Package check complete."
