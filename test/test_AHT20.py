@@ -23,8 +23,6 @@
 
 import time
 import board
-# Only imported for test purpose
-from pynput import keyboard
 import adafruit_ahtx0
 
 # ==================================================
@@ -44,28 +42,6 @@ temp_hum_sensor = adafruit_ahtx0.AHTx0(i2c_port)
 # Functions
 # ==================================================
 
-def on_press(input_key):
-    """
-    Reads keyboard pressed by the user and exit the main loop
-    if the space bar is pressed.
-    
-    Returns:
-        boolean
-    """
-    global main_loop
-    try:
-        # Check if the spacebar is pressed
-        if input_key == keyboard.Key.space:
-            print("Spacebar pressed. Exiting program...")
-            
-            # Exit the main loop
-            main_loop = False
-            
-            # Stop listener
-            return False  
-    except AttributeError:
-        pass
-
 def read_temperature_humidity():
     """
     Reads temperature and humidity from the AHT20 sensor.
@@ -81,12 +57,7 @@ def read_temperature_humidity():
 # Main Program Entry
 # ==================================================
 
-# Set up the keyboard listener
-listener = keyboard.Listener(on_press=on_press)
-listener.start()  # Start the listener in the background
-
 if __name__ == "__main__":
-    print("Press spacebar if you want to exit the loop...")
     
     # Loop until the spacebar is pressed
     while main_loop:
@@ -100,8 +71,5 @@ if __name__ == "__main__":
         # Wait for 2 seconds
         time.sleep(2)
 
-# Wait for the listener to stop and properly exit the program...
-listener.stop()
 
-print("Program terminated.")
 
