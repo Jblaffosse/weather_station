@@ -22,12 +22,16 @@ Import the git repository with [git](https://github.com/) in order to obtain the
 git clone https://github.com/Jblaffosse/weather_station.git
 ```
 
-## Build
-
-Compile and build the executable of the Weather Station with:
+Then you can run the following script in order to verify and if needed install the following dependencies:
+- time
+- board
+- adafruit_ahtx0
+- adafruit_tsl2591
+- flask
 
 ```bash
-TBD
+cd config/
+./install.sh
 ```
 
 ## Execute Application

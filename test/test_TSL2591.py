@@ -23,9 +23,6 @@
 
 import time
 import board
-# Only imported for test purpose
-import keyboard
-# TODO verify that the library is correctly imported
 import adafruit_tsl2591
 
 # ==================================================
@@ -74,7 +71,6 @@ def read_light_level():
 # ==================================================
 
 if __name__ == "__main__":
-    print("Press spacebar if you want to exit the loop...")
     
     # Loop until the spacebar is pressed
     while True:
@@ -86,8 +82,3 @@ if __name__ == "__main__":
     
         # Wait for 2 seconds
         time.sleep(2)
-        
-        # Verify if the spacebar is pressed
-        if keyboard.is_pressed('space'):
-            print("Spacebar pressed. Exiting program.")
-            break

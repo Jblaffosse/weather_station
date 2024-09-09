@@ -20,7 +20,6 @@
 REQUIRED_PACKAGES=(
     "time"
     "board"
-    "keyboard"
     "adafruit_ahtx0"
     "adafruit_tsl2591"
     "flask"
