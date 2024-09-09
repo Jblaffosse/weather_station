@@ -12,7 +12,14 @@ https://www.raspberrypi.org/app/uploads/2012/12/quick-start-guide-v1.1.pdf
 
 ## Pinout
 
-TBD
+As shown in the image "Raspberry Pi 4 Model B - Pinout.png," please connect the following cables:
+
+Raspberry Pi 4 Model B <-> Sensors using STEMMA QT
+3V3 Power (Pin 1) <-> VIN (Red)
+GPIO 2 - SDA (Pin 3) <-> SDA (Blue)
+GPIO 3 - SCL (Pin 5) <-> SCL (Yellow)
+Ground (Pin 9) <-> GND (Black)
+
 
 ## Installation
 
