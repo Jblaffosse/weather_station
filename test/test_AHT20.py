@@ -24,13 +24,15 @@
 import time
 import board
 # Only imported for test purpose
-import keyboard
-# TODO verify that the library is correctly imported
+from pynput import keyboard
 import adafruit_ahtx0
 
 # ==================================================
 # Constants
 # ==================================================
+
+# Flag to control the main loop
+main_loop = True
 
 # Declare I2C port
 i2c_port = board.I2C()
@@ -41,6 +43,28 @@ temp_hum_sensor = adafruit_ahtx0.AHTx0(i2c_port)
 # ==================================================
 # Functions
 # ==================================================
+
+def on_press(input_key):
+    """
+    Reads keyboard pressed by the user and exit the main loop
+    if the space bar is pressed.
+    
+    Returns:
+        boolean
+    """
+    global main_loop
+    try:
+        # Check if the spacebar is pressed
+        if input_key == keyboard.Key.space:
+            print("Spacebar pressed. Exiting program...")
+            
+            # Exit the main loop
+            main_loop = False
+            
+            # Stop listener
+            return False  
+    except AttributeError:
+        pass
 
 def read_temperature_humidity():
     """
@@ -57,11 +81,15 @@ def read_temperature_humidity():
 # Main Program Entry
 # ==================================================
 
+# Set up the keyboard listener
+listener = keyboard.Listener(on_press=on_press)
+listener.start()  # Start the listener in the background
+
 if __name__ == "__main__":
     print("Press spacebar if you want to exit the loop...")
     
     # Loop until the spacebar is pressed
-    while True:
+    while main_loop:
         # Retrieve the temperature and humidity provided by the AHT20 sensor
         current_temperature, current_humidity = read_temperature_humidity()
         
@@ -71,8 +99,9 @@ if __name__ == "__main__":
     
         # Wait for 2 seconds
         time.sleep(2)
-        
-        # Verify if the spacebar is pressed
-        if keyboard.is_pressed('space'):
-            print("Spacebar pressed. Exiting program.")
-            break
+
+# Wait for the listener to stop and properly exit the program...
+listener.stop()
+
+print("Program terminated.")
+
