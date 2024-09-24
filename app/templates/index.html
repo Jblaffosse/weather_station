@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+        <h1>Congratulations, this is your first web app!</h1>
+        <h2>Please enter any celsius value you want to convert...</h2>
+        <h2>{{ web_page_content.msg_after_conversion }}</h2>
+        <form action="" method="get">
+            Celsius temperature: <input type="text" name="celsius">
+            <input type="submit" value="Convert">
+        </form>
+        {% for weather_station in weather_stations %}
+        <div>
+            <p><b>{{ weather_station.name }}</b><br>{{ weather_station.description }}</p>
+        </div>
+        {% endfor %}
+{% endblock %}

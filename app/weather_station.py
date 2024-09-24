@@ -11,6 +11,8 @@
                   https://realpython.com/python-web-applications/
                   https://realpython.com/flask-javascript-frontend-for-rest-api/
                   https://realpython.com/html-css-python/
+                  
+                  https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world
     
     Author:       JB LAFFOSSE
     Date:         2024-09-04
@@ -24,20 +26,38 @@
 
 from flask import Flask
 from flask import request
+from flask import render_template
 
 # ==================================================
 # Constants
 # ==================================================
 
 # Flask Web Server Configuration
-deploy_ip_address = "192.168.4.46"
+deploy_ip_address = "127.0.0.1"
 deploy_port_number = 10500
 app = Flask(__name__)
+
+# Declare the number of different weather stations
+# IMPROVEMENT - TODO need to dynamically create this variable by detecting
+# all the different weather stations declared inside the database
+weather_stations = [
+        {
+            'id': 101,
+            'name': 'Bedroom',
+            'description': 'Master bedroom'
+        },
+        {
+            'id': 102,
+            'name': 'Salon',
+            'description': 'Salon and kitchen'
+        }
+    ]
 
 # ==================================================
 # Functions
 # ==================================================
 @app.route('/')
+@app.route('/index')
 def index():
     """
     Flask route to render the main web page with welcome message.
@@ -54,16 +74,15 @@ def index():
         msg_after_conversion = celsius + " °C = " + fahrenheit + " F"
     else:
         msg_after_conversion = ""
+        
+    # Initialize the variable for the template
+    web_page_content = {
+            'title' : 'Home Page',
+            'msg_after_conversion' : msg_after_conversion
+            }
+    
 
-    return (
-        """<form action="" method="get">
-                Celsius temperature: <input type="text" name="celsius">
-                <input type="submit" value="Convert">
-            </form>"""
-        + "Congratulations, this is your first web app! "
-        + "Please enter any celsius value you want to convert... <br>"
-        + msg_after_conversion
-    )
+    return render_template('index.html', web_page_content=web_page_content, weather_stations=weather_stations)
 
 @app.route('/<int:celsius>')
 def fahrenheit_from(celsius):

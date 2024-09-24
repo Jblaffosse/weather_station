@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+    <head>
+        {% if title %}
+            <title>{{ web_page_content.title }} - Weather Station</title>
+        {% else %}
+            <title>Weather Station</title>
+        {% endif %}
+    </head>
+    <body>
+        <div>
+            Weather Station: <a href="/index">Home</a>
+        </div>
+        {% block page_content %}{% endblock %}
+    </body>
+<html>
