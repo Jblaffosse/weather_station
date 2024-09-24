@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-    Program Name: Flask Web Application
+    Program Name: Weather Station
     Description:  This Python program allows to create a simple
                   Python Web Application using the flash framework.
                   
@@ -15,7 +15,7 @@
                   https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world
     
     Author:       JB LAFFOSSE
-    Date:         2024-09-04
+    Date:         2024-09-24
     Version:      1.0.0
     License:      None
 """
