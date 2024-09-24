@@ -27,31 +27,16 @@
 from flask import Flask
 from flask import request
 from flask import render_template
+import config
 
 # ==================================================
 # Constants
 # ==================================================
 
-# Flask Web Server Configuration
-deploy_ip_address = "127.0.0.1"
-deploy_port_number = 10500
-app = Flask(__name__)
+# Configuration parameters have been declared inside "config.py"
 
-# Declare the number of different weather stations
-# IMPROVEMENT - TODO need to dynamically create this variable by detecting
-# all the different weather stations declared inside the database
-weather_stations = [
-        {
-            'id': 101,
-            'name': 'Bedroom',
-            'description': 'Master bedroom'
-        },
-        {
-            'id': 102,
-            'name': 'Salon',
-            'description': 'Salon and kitchen'
-        }
-    ]
+# Create flask application as an instance of the Flask class
+app = Flask(__name__)
 
 # ==================================================
 # Functions
@@ -82,7 +67,7 @@ def index():
             }
     
 
-    return render_template('index.html', web_page_content=web_page_content, weather_stations=weather_stations)
+    return render_template('index.html', web_page_content=web_page_content, weather_stations=config.weather_stations)
 
 @app.route('/<int:celsius>')
 def fahrenheit_from(celsius):
@@ -110,7 +95,7 @@ def fahrenheit_from(celsius):
     
 if __name__ == "__main__":
     try:
-        app.run(host=deploy_ip_address, port=deploy_port_number, debug=True)
+        app.run(host=config.deploy_ip_address, port=config.deploy_port_number, debug=True)
     except KeyboardInterrupt:
         print("Program interrupted by user. Exiting...")
     except Exception as e:
