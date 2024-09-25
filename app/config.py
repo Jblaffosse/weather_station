@@ -33,25 +33,6 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 # Classes
 # ==================================================
 
-# Declare the number of different weather stations
-# IMPROVEMENT - TODO:
-# - Define properly  the class used for the weather stations
-# - Retrieve dynamically all the different weather stations declared inside the database
-class WeatherStation:
-    weather_stations = [
-            {
-                'id': 101,
-                'name': 'Bedroom',
-                'description': 'Master bedroom'
-            },
-            {
-                'id': 102,
-                'name': 'Salon',
-                'description': 'Salon and kitchen'
-            }
-        ]
-
-
 # All the configuration parameters within one single class
 class Config:
 
@@ -60,7 +41,11 @@ class Config:
     
     # Define the port used to deployed the web application
     deploy_port_number = 10500
+    
+    # Define the name of the HTML files used for the application
+    index_html_file = 'index.html'
+    forecasts_html_file = 'forecasts.html'
 
-    # 
+    # Define the location of the application's database
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
         'sqlite:///' + os.path.join(basedir, 'app.db')

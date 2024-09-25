@@ -3,19 +3,10 @@
 
 """
     Program Name: Weather Station
-    Description:  This Python program allows to create a simple
-                  Python Web Application using the flash framework.
-                  
-                  For more information concerning Flask framework,
-                  please see the following website(s):
-                  https://realpython.com/python-web-applications/
-                  https://realpython.com/flask-javascript-frontend-for-rest-api/
-                  https://realpython.com/html-css-python/
-                  
-                  https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world
+    Description:  This Python program allows to define all the routes for the web application.
     
     Author:       JB LAFFOSSE
-    Date:         2024-09-24
+    Date:         2024-09-25
     Version:      1.0.0
     License:      None
 """
@@ -24,41 +15,40 @@
 # Imports
 # ==================================================
 
+from app import app
+
 # Different imports corresponding to flask framework
-from flask import Flask
 from flask import request
 from flask import render_template, redirect, url_for
 
 # Import configuration parameters
-from config import Config, WeatherStation
+from app.config import Config
 
-# Import for SQLAlchemy 
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
+# Import database model for the weather station
+from app.models import WeatherStation, WeatherData
 
 # ==================================================
 # Constants
 # ==================================================
 
-# Configuration parameters have been declared inside "config.py"
-
-# Define the name of the HTML files used for the application
-index_html_file = 'index.html'
-forecasts_html_file = 'forecasts.html'
-
-# Create flask application as an instance of the Flask class
-app = Flask(__name__)
-app.config.from_object(Config)
-
-# Create the SQLAlchemy database and the related migration engine
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-
-# TBD is it useful ? from app import routes, models
+# TODO - TBD: For test purpose, create two instances of weather station:
+weather_stations = [
+                    WeatherStation(id=101,
+                                    station_name='Bedroom',
+                                    station_description='Master bedroom'),
+                    WeatherStation(id=102,
+                                    station_name='Living Room',
+                                    station_description='Living room with kitchen')
+                                    ]
+                                    
+                                    
+# TODO - TBD: For test purpose, declare a sample of weather data
+data = WeatherData(temperature = 25.0, humidity = 85.2, luminosity = 54.3, station_id = weather_stations[0].get_station_id())
 
 # ==================================================
 # Functions
 # ==================================================
+
 @app.route('/', methods=['GET'])
 @app.route('/index', methods=['GET'])
 def index():
@@ -83,9 +73,8 @@ def index():
             'title' : 'Home Page',
             'msg_after_conversion' : msg_after_conversion
             }
-    
 
-    return render_template(index_html_file, web_page_content=web_page_content, weather_stations=WeatherStation.weather_stations)
+    return render_template(Config.index_html_file, web_page_content=web_page_content, weather_stations=weather_stations)
 
 @app.route('/<int:celsius>', methods=['GET'])
 def fahrenheit_from(celsius):
@@ -119,20 +108,9 @@ def forecasts():
     if (request.method == 'POST') and (request.form['back_button'] == 'back'):
         return redirect( url_for('index') )
     else:
-        return render_template(forecasts_html_file, web_page_content=web_page_content)
-
+        return render_template(Config.forecasts_html_file, web_page_content=web_page_content)
 
 # ==================================================
-# Main Program Entry
+# Classes
 # ==================================================
-    
-if __name__ == "__main__":
-    try:
-        app.run(host=Config.deploy_ip_address, port=Config.deploy_port_number, debug=True)
-    except KeyboardInterrupt:
-        print("Program interrupted by user. Exiting...")
-    except Exception as e:
-        print(f"An error occurred: {e}")
-    finally:
-        print("Cleaning up resources...")
-        # Add any cleanup code here if necessary
+

@@ -26,7 +26,7 @@
         </form>
         {% for weather_station in weather_stations %}
         <div>
-            <p><b>{{ weather_station.name }}</b><br>{{ weather_station.description }}</p>
+            <p><b>{{ weather_station.station_name }}</b><br>{{ weather_station.station_description }}</p>
         </div>
         {% endfor %}
 {% endblock %}
