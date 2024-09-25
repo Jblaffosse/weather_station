@@ -24,10 +24,17 @@
 # Imports
 # ==================================================
 
+# Different imports corresponding to flask framework
 from flask import Flask
 from flask import request
-from flask import render_template
-import config
+from flask import render_template, redirect, url_for
+
+# Import configuration parameters
+from config import Config, WeatherStation
+
+# Import for SQLAlchemy 
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 # ==================================================
 # Constants
@@ -35,14 +42,25 @@ import config
 
 # Configuration parameters have been declared inside "config.py"
 
+# Define the name of the HTML files used for the application
+index_html_file = 'index.html'
+forecasts_html_file = 'forecasts.html'
+
 # Create flask application as an instance of the Flask class
 app = Flask(__name__)
+app.config.from_object(Config)
+
+# Create the SQLAlchemy database and the related migration engine
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+
+# TBD is it useful ? from app import routes, models
 
 # ==================================================
 # Functions
 # ==================================================
-@app.route('/')
-@app.route('/index')
+@app.route('/', methods=['GET'])
+@app.route('/index', methods=['GET'])
 def index():
     """
     Flask route to render the main web page with welcome message.
@@ -67,9 +85,9 @@ def index():
             }
     
 
-    return render_template('index.html', web_page_content=web_page_content, weather_stations=config.weather_stations)
+    return render_template(index_html_file, web_page_content=web_page_content, weather_stations=WeatherStation.weather_stations)
 
-@app.route('/<int:celsius>')
+@app.route('/<int:celsius>', methods=['GET'])
 def fahrenheit_from(celsius):
     """
     Convert the input Celsius value into Fahrenheit degrees.
@@ -89,13 +107,28 @@ def fahrenheit_from(celsius):
     except ValueError:
         return "invalid input"
 
+
+@app.route('/forecasts', methods=['GET', 'POST'])
+def forecasts():
+
+    # Initialize the variable for the template
+    web_page_content = {
+            'title' : 'Home Page'
+            }
+            
+    if (request.method == 'POST') and (request.form['back_button'] == 'back'):
+        return redirect( url_for('index') )
+    else:
+        return render_template(forecasts_html_file, web_page_content=web_page_content)
+
+
 # ==================================================
 # Main Program Entry
 # ==================================================
     
 if __name__ == "__main__":
     try:
-        app.run(host=config.deploy_ip_address, port=config.deploy_port_number, debug=True)
+        app.run(host=Config.deploy_ip_address, port=Config.deploy_port_number, debug=True)
     except KeyboardInterrupt:
         print("Program interrupted by user. Exiting...")
     except Exception as e:

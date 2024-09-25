@@ -23,6 +23,8 @@ REQUIRED_PACKAGES=(
     "adafruit_ahtx0"
     "adafruit_tsl2591"
     "flask"
+    "flask_sqlalchemy"
+    "flask_migrate "
 )
 
 # Python interpreter (change to python3 if needed)

@@ -3,7 +3,7 @@
 * * Weather Station
 =========================================================
 
-* Layout for all the web pages
+* Single layout for all the web pages
 
 
 * Author: JB LAFFOSSE
@@ -17,6 +17,7 @@
 <!doctype html>
 <html>
     <head>
+        <!-- Display the title of the web page if properly defined -->
         {% if title %}
             <title>{{ web_page_content.title }} - Weather Station</title>
         {% else %}
@@ -24,9 +25,16 @@
         {% endif %}
     </head>
     <body>
+        <!-- Allow to declare all the tabs of the web application at the top -->
         <div>
-            Weather Station: <a href="/index">Home</a>
+            Weather Station:
+            <a href="{{ url_for('index') }}">Home</a>            
+            <a href="{{ url_for('forecasts') }}">Forecasts</a>
+            
+            <!-- Add more link at the top of the page here -->
         </div>
+        
+        <!-- All the web pages will be integrated between the following tags: -->
         {% block page_content %}{% endblock %}
     </body>
 <html>

@@ -143,6 +143,13 @@ $ sudo raspi-config
 Then, go to "Interfacing Options > I2C" and select "Yes".
 Finally you can exit when the I2C has been activated.
 
+- Install SQLAlchemy:
+
+```bash
+$ python -m pip install flask-sqlalchemy
+$ python -m pip install flask-migrate
+```
+
 
 ## License
 None
