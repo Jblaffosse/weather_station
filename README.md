@@ -49,7 +49,7 @@ cd config/
 You can execute the Weather Station with:
 
 ```bash
-TBD
+python3 weather_station.py
 ```
 
 ## Troubleshooting
