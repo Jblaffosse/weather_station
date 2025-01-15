@@ -17,12 +17,18 @@
 <!doctype html>
 <html>
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
         <!-- Display the title of the web page if properly defined -->
         {% if title %}
             <title>{{ web_page_content.title }} - Weather Station</title>
         {% else %}
             <title>Weather Station</title>
         {% endif %}
+        
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+        
     </head>
     <body>
         <!-- Allow to declare all the tabs of the web application at the top -->
