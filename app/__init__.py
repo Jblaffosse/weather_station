@@ -56,7 +56,7 @@ migrate = Migrate(app, db)
 
 # Import routes and models following the initialization 
 # of the flask app and the SQLAlchemy database
-from app import routes, models
+from app import routes, models, errors
 
 
 # ==================================================

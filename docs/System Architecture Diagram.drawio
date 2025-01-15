@@ -1,13 +1,13 @@
-<mxfile host="Electron" modified="2024-09-24T19:42:48.157Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.0.3 Chrome/114.0.5735.289 Electron/25.8.4 Safari/537.36" etag="MIv-hZSjnJLYO5o-jrbf" version="22.0.3" type="device">
-  <diagram name="Page-1" id="Q4rZu_LvMLpEQK1RkZZC">
-    <mxGraphModel dx="675" dy="1559" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+<mxfile host="Electron" modified="2025-01-15T21:17:27.863Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.0.3 Chrome/114.0.5735.289 Electron/25.8.4 Safari/537.36" etag="IWrRbe-HmMIvKevPwwF-" version="22.0.3" type="device" pages="2">
+  <diagram name="High-level System Architecture Design" id="Q4rZu_LvMLpEQK1RkZZC">
+    <mxGraphModel dx="1034" dy="1775" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="ivgiZYofwmfwTLloGg20-1" value="Database" style="shape=datastore;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="230" y="205" width="90" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="ivgiZYofwmfwTLloGg20-2" value="MySQL ?" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;" parent="1" vertex="1">
+        <mxCell id="ivgiZYofwmfwTLloGg20-2" value="SQLAlchemy" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;" parent="1" vertex="1">
           <mxGeometry x="225" y="315" width="100" height="40" as="geometry" />
         </mxCell>
         <mxCell id="ivgiZYofwmfwTLloGg20-3" value="User" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" parent="1" vertex="1">
@@ -104,6 +104,68 @@
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="320" y="130" as="sourcePoint" />
             <mxPoint x="370" y="80" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="bamgduMelKxRTM5ARuDJ-1" value="Architecture Design Choices:&lt;br&gt;- Both sensors (TSL2591 and&amp;nbsp;AHT20) have online documentation and relevant ressources to easily integrate them inside your applicable, e.g. in python&lt;br&gt;- Python allows to develop very quickly an application, them you can rely on the Oriented Object Programming (OOP) offers by this language to design a very well structure architecture&lt;br&gt;- SQLAlchemy can be easily integrated inside your flask application thanks to its dedicated extension, then it is an Object Relational Mapper (ORM) that allows to define strict relational model (SQL) for which you can declare&amp;nbsp;high-level entities such as classes, objects and methods and use relational query thanks to SQL. In the futur, if needed, you can deploy the application on a dedicated SQL server, for example MySQL or PostgreSQL" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="940" y="160" width="810" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="ys7APsfj9x5zvuN_6Rmq" name="SQL DB Models">
+    <mxGraphModel dx="862" dy="505" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="QjuCx9wdy54Hh_jTp_j4-2" value="Weather Station" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="60" y="250" width="410" height="150" as="geometry">
+            <mxRectangle x="60" y="250" width="130" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QjuCx9wdy54Hh_jTp_j4-3" value="ID: Integer, used as Primary key" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="QjuCx9wdy54Hh_jTp_j4-2">
+          <mxGeometry y="30" width="410" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="QjuCx9wdy54Hh_jTp_j4-4" value="Station Name: String, Name used to identify the weather station" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="QjuCx9wdy54Hh_jTp_j4-2">
+          <mxGeometry y="60" width="410" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="QjuCx9wdy54Hh_jTp_j4-5" value="Station Description: String, used to quickly present the weather station" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="QjuCx9wdy54Hh_jTp_j4-2">
+          <mxGeometry y="90" width="410" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="QjuCx9wdy54Hh_jTp_j4-6" value="Weather Data: All the data generated by the weather station" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="QjuCx9wdy54Hh_jTp_j4-2">
+          <mxGeometry y="120" width="410" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="QjuCx9wdy54Hh_jTp_j4-7" value="Weather Data" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="650" y="250" width="410" height="210" as="geometry">
+            <mxRectangle x="60" y="250" width="130" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QjuCx9wdy54Hh_jTp_j4-8" value="ID: Integer, used as Primary key" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="QjuCx9wdy54Hh_jTp_j4-7">
+          <mxGeometry y="30" width="410" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="QjuCx9wdy54Hh_jTp_j4-9" value="Timestamp: datetime, time when the data has been registered" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="QjuCx9wdy54Hh_jTp_j4-7">
+          <mxGeometry y="60" width="410" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="QjuCx9wdy54Hh_jTp_j4-10" value="Temperature: Float, temperature measured by the weather station" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="QjuCx9wdy54Hh_jTp_j4-7">
+          <mxGeometry y="90" width="410" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="QjuCx9wdy54Hh_jTp_j4-11" value="Humidity: Float, humidity measured by the weather station" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="QjuCx9wdy54Hh_jTp_j4-7">
+          <mxGeometry y="120" width="410" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="QjuCx9wdy54Hh_jTp_j4-12" value="Luminosity: Float, luminosity measured by the weather station" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="QjuCx9wdy54Hh_jTp_j4-7">
+          <mxGeometry y="150" width="410" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="QjuCx9wdy54Hh_jTp_j4-13" value="Station ID: Integer, ID of the weather station that registered this data" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="QjuCx9wdy54Hh_jTp_j4-7">
+          <mxGeometry y="180" width="410" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="QjuCx9wdy54Hh_jTp_j4-14" value="" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=ERoneToMany;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="QjuCx9wdy54Hh_jTp_j4-3" target="QjuCx9wdy54Hh_jTp_j4-13">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="390" y="560" as="sourcePoint" />
+            <mxPoint x="490" y="460" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QjuCx9wdy54Hh_jTp_j4-15" value="One-to-Many Cardinality" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="QjuCx9wdy54Hh_jTp_j4-14">
+          <mxGeometry x="-0.1551" y="1" relative="1" as="geometry">
+            <mxPoint x="5" y="29" as="offset" />
           </mxGeometry>
         </mxCell>
       </root>

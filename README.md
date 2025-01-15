@@ -39,6 +39,8 @@ Then you can run the following script in order to verify and if needed install t
 - adafruit_ahtx0
 - adafruit_tsl2591
 - flask
+- flask_sqlalchemy
+- flask_migrate
 
 ```bash
 cd config/

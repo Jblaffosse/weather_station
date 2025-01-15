@@ -45,7 +45,7 @@ from app.config import Config
     
 if __name__ == "__main__":
     try:
-        app.run(host=Config.deploy_ip_address, port=Config.deploy_port_number, debug=True)
+        app.run(host=Config.deploy_ip_address, port=Config.deploy_port_number, debug=Config.deploy_mode)
     except KeyboardInterrupt:
         print("Program interrupted by user. Exiting...")
     except Exception as e:

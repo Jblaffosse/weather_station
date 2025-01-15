@@ -36,6 +36,9 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 # All the configuration parameters within one single class
 class Config:
 
+    # Define if the web application is executed 
+    deploy_mode = True
+
     # Define the IP address used to deployed the web application
     deploy_ip_address = "127.0.0.1"
     
@@ -45,6 +48,8 @@ class Config:
     # Define the name of the HTML files used for the application
     index_html_file = 'index.html'
     forecasts_html_file = 'forecasts.html'
+    error_404_page = '404.html'
+    error_500_page = '500.html'
 
     # Define the location of the application's database
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
