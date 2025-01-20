@@ -15,7 +15,7 @@
 # Imports
 # ==================================================
 
-from app import app
+from app import app, db
 
 # Different imports corresponding to flask framework
 from flask import request

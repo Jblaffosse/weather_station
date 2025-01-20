@@ -53,4 +53,7 @@ class Config:
 
     # Define the location of the application's database
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-        'sqlite:///' + os.path.join(basedir, 'app.db')
+        'sqlite:///' + os.path.join(basedir, 'ws_app.db')
+        
+    # Define the absolute path to the SQLAlchemy database
+    sqlalchemy_absolute_path = os.path.join(basedir, 'ws_app.db')

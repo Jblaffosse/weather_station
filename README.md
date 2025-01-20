@@ -41,6 +41,7 @@ Then you can run the following script in order to verify and if needed install t
 - flask
 - flask_sqlalchemy
 - flask_migrate
+- sqlalchemy_utils
 
 ```bash
 cd config/

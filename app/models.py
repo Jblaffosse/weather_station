@@ -51,7 +51,7 @@ class WeatherStation(db.Model):
     station_description: so.Mapped[str] = so.mapped_column(sa.String(128), index=True)
     
     # Declare the relationship between the data and the weather station
-    weather_datas: so.WriteOnlyMapped['WeatherData'] = so.relationship(back_populates='related_station')
+    weather_datas: so.WriteOnlyMapped['WeatherData'] = so.relationship(back_populates='related_station', cascade="all, delete-orphan", passive_deletes=True)
     
     # Return the id of the current weather station
     def get_station_id(self):
@@ -79,7 +79,7 @@ class WeatherData(db.Model):
     luminosity: so.Mapped[float] = so.mapped_column(nullable=False)
     
     # Declare the weather station which has measured the data
-    station_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey(WeatherStation.id), index=True)
+    station_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey(WeatherStation.id, ondelete="CASCADE"), index=True)
     
     # Declare the relationship between the data and the weather station
     related_station: so.Mapped[WeatherStation] = so.relationship(back_populates='weather_datas')
