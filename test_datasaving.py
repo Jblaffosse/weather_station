@@ -137,9 +137,10 @@ weather_stations = [
 # Functions
 # ==================================================
 
-def test_create_weather_data():
+def test_create_weather_data(input_station_id):
     """
-    Allows to create fake weather data (temperature, humidity and luminosity).
+    Allows to create fake weather data (temperature, humidity and luminosity)
+    for one given station id.
     
     Returns:
         WeatherData: instance of the class with all the values
@@ -148,9 +149,8 @@ def test_create_weather_data():
     fake_temperature = random.uniform(min_temperature, max_temperature)
     fake_humidity = random.uniform(min_humidity, max_humidity)
     fake_luminosity = random.uniform(min_luminosity, max_luminosity)
-    random_station_id = weather_stations[random.randint(0,1)].get_station_id()
     
-    fake_weather_data = WeatherData(temperature = fake_temperature, humidity = fake_humidity, luminosity = fake_luminosity, station_id = random_station_id)
+    fake_weather_data = WeatherData(temperature = fake_temperature, humidity = fake_humidity, luminosity = fake_luminosity, station_id = input_station_id)
     
     
     return fake_weather_data
@@ -161,18 +161,157 @@ def test_create_weather_data():
 
 if __name__ == "__main__":
 
+    print("####################")
+    print("###### Test 1 ######")
+    print("####################")
+    print("Purpose:")
+    print("Check that sql_db_verify_if_db_exists() detects if the SQLAlchemy database is correctly initialized and configured.")
+    print("Expected Result:")
+    print("The SQLAlchemy database is properly initialized and configured!")
+    print("Obtained Result:")
+
+    # Test the following function: sql_db_verify_if_db_exists()
+    if sql_db_verify_if_db_exists(app, db):
+        print("The SQLAlchemy database is properly initialized and configured!")
+    else:
+        print("The database does not exist, please make sure to initialize and configure properly the SQLAlchemy database")
+
     # First, reset any previous data
     sql_db_delete_all_database(app, db)
     
+    # Display the content of the database
     sql_db_retrieve_all_weather_stations(app, db)
+    
+    
+    print("####################")
+    print("###### Test 2 ######")
+    print("####################")
+    print("Purpose:")
+    print("Check that sql_db_add_weather_station_into_db() adds correctly one weather station inside the database.")
+    print("Expected Result:")
+    print("The following weather station has been successfully added to the database: Living Room")
+    print("Obtained Result:")
     
     # Add one weather station inside the database
     sql_db_add_weather_station_into_db(app, db, weather_stations[1])
+    
+    
+    print("####################")
+    print("###### Test 3 ######")
+    print("####################")
+    print("Purpose:")
+    print("Check that two similar weather stations cannot be present inside the database.")
+    print("Expected Result:")
+    print("WARNING! The following weather station is already present in the database: Living Room")
+    print("Obtained Result:")
+    
+    # Verify the following robustness case:
+    # Every weather station shall be unique, therefore two similar
+    # weather stations cannot be present inside the database
     sql_db_add_weather_station_into_db(app, db, weather_stations[1])
-    sql_db_add_weather_station_into_db(app, db, weather_stations[0])
+    
+    
+    print("####################")
+    print("###### Test 4 ######")
+    print("####################")
+    print("Purpose:")
+    print("Check that sql_db_add_weather_station_into_db() adds correctly one weather station inside the database.")
+    print("Expected Result:")
+    print("The following weather station has been successfully added to the database: Bedroom")
+    print("Obtained Result:")
+    
+    # Add a second weather station inside the database
     sql_db_add_weather_station_into_db(app, db, weather_stations[0])
     
+    
+    print("####################")
+    print("###### Test 5 ######")
+    print("####################")
+    print("Purpose:")
+    print("Check that two similar weather stations cannot be present inside the database.")
+    print("Expected Result:")
+    print("WARNING! The following weather station is already present in the database: Bedroom")
+    print("Obtained Result:")
+    
+    # Verify the following robustness case:
+    # Every weather station shall be unique, therefore two similar
+    # weather stations cannot be present inside the database
+    sql_db_add_weather_station_into_db(app, db, weather_stations[0])
+    
+    
+    print("####################")
+    print("###### Test 6 ######")
+    print("####################")
+    print("Purpose:")
+    print("Check that two weather stations are present inside the database.")
+    print("Expected Result:")
+    print("The weather stations related to Living room and bedroom are present inside the database")
+    print("Obtained Result:")
+    
+    # Display the content of the database
     sql_db_retrieve_all_weather_stations(app, db)
+    
+    
+    print("####################")
+    print("###### Test 7 ######")
+    print("####################")
+    print("Purpose:")
+    print("Check that weather data can be added to one weather station.")
+    print("Expected Result:")
+    print("The weather data has been successfully added inside the database!")
+    print("Obtained Result:")
+    
+    # Add several weather data for one weather station
+    test_weather_data1 = test_create_weather_data(weather_stations[0].id)
+    if sql_db_add_weather_data_for_one_ws(app, db, weather_stations[0], test_weather_data1) == 0:
+        print("The weather data has been successfully added inside the database!")
+    else:
+        print("An error occurs during the adding of the weather data inside the database...")
+    
+    
+    print("####################")
+    print("###### Test 8 ######")
+    print("####################")
+    print("Purpose:")
+    print("Check that weather data can be added to one weather station.")
+    print("Expected Result:")
+    print("The weather data has been successfully added inside the database!")
+    print("Obtained Result:")
+    
+    test_weather_data2 = test_create_weather_data(weather_stations[0].id)
+    if sql_db_add_weather_data_for_one_ws(app, db, weather_stations[0], test_weather_data2) == 0:
+        print("The weather data has been successfully added inside the database!")
+    else:
+        print("An error occurs during the adding of the weather data inside the database...")
+    
+    
+    print("####################")
+    print("###### Test 9 ######")
+    print("####################")
+    print("Purpose:")
+    print("Check that weather data can be added to one weather station.")
+    print("Expected Result:")
+    print("The weather data has been successfully added inside the database!")
+    print("Obtained Result:")
+    
+    test_weather_data3 = test_create_weather_data(weather_stations[0].id)
+    if sql_db_add_weather_data_for_one_ws(app, db, weather_stations[0], test_weather_data3) == 0:
+        print("The weather data has been successfully added inside the database!")
+    else:
+        print("An error occurs during the adding of the weather data inside the database...")
+    
+    
+    print("####################")
+    print("###### Test 10 ######")
+    print("####################")
+    print("Purpose:")
+    print("Check that three previous weather data can be retrieved from the database.")
+    print("Expected Result:")
+    print("The three weather data are present inside the database!")
+    print("Obtained Result:")
+    
+    # Display all the weather data for one given weather station
+    sql_db_retrieve_all_weather_data_for_one_ws(app, db, weather_stations[0])
         
     # Finally, clean any modifications done during the test
     sql_db_delete_all_database(app, db)
