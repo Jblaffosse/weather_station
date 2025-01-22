@@ -66,16 +66,16 @@ class WeatherData(db.Model):
     # Declare primary key used to navigate withing the database
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     
-    # Declare the time when the data were measured (TBD)
+    # Declare the time when the data were measured
     timestamp: so.Mapped[datetime] = so.mapped_column(index=True, default=lambda: datetime.now(timezone.utc))
     
-    # Declare the temperature (in celsius) (TBD)
+    # Declare the temperature (in celsius)
     temperature: so.Mapped[float] = so.mapped_column(nullable=False)
     
-    # Declare the humidity rate (TBD)
+    # Declare the humidity rate
     humidity: so.Mapped[float] = so.mapped_column(nullable=False)
     
-    # Declare the luminosity level (TBD)
+    # Declare the luminosity level
     luminosity: so.Mapped[float] = so.mapped_column(nullable=False)
     
     # Declare the weather station which has measured the data

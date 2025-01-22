@@ -34,6 +34,9 @@ from app.config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
+# DEBUG
+import time
+
 # ==================================================
 # Constants
 # ==================================================
@@ -57,6 +60,8 @@ migrate = Migrate(app, db)
 # Import routes and models following the initialization 
 # of the flask app and the SQLAlchemy database
 from app import routes, models, errors
+
+# TBD TODO add the UDP server code here using threading
 
 
 # ==================================================

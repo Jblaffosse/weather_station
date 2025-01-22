@@ -40,8 +40,7 @@ weather_stations = [
                                     station_name='Living Room',
                                     station_description='Living room with kitchen')
                                     ]
-                                    
-                                    
+
 # TODO - TBD: For test purpose, declare a sample of weather data
 data = WeatherData(temperature = 25.0, humidity = 85.2, luminosity = 54.3, station_id = weather_stations[0].get_station_id())
 

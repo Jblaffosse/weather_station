@@ -8,7 +8,7 @@
     
     Author:       JB LAFFOSSE
     Date:         2025-01-16
-    Version:      1.0.0
+    Version:      1.0.1
     License:      None
 """
 
@@ -26,7 +26,11 @@ from datetime import datetime, timezone
 # Import os in order to verify if the database was already created
 import os
 
-# JBL TODO test following imports:
+# For the UDP server
+import socket
+from app.data_transmission_utils import *
+
+# Import for SQLAlchemy 
 import sqlalchemy as sa
 import sqlalchemy.orm as so
 from app import app
@@ -95,16 +99,16 @@ class WeatherData(db.Model):
     # Declare primary key used to navigate withing the database
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     
-    # Declare the time when the data were measured (TBD)
+    # Declare the time when the data were measured
     timestamp: so.Mapped[datetime] = so.mapped_column(index=True, default=lambda: datetime.now(timezone.utc))
     
-    # Declare the temperature (in celsius) (TBD)
+    # Declare the temperature (in celsius)
     temperature: so.Mapped[float] = so.mapped_column(nullable=False)
     
-    # Declare the humidity rate (TBD)
+    # Declare the humidity rate
     humidity: so.Mapped[float] = so.mapped_column(nullable=False)
     
-    # Declare the luminosity level (TBD)
+    # Declare the luminosity level
     luminosity: so.Mapped[float] = so.mapped_column(nullable=False)
     
     # Declare the weather station which has measured the data
@@ -301,9 +305,9 @@ if __name__ == "__main__":
         print("An error occurs during the adding of the weather data inside the database...")
     
     
-    print("####################")
+    print("#####################")
     print("###### Test 10 ######")
-    print("####################")
+    print("#####################")
     print("Purpose:")
     print("Check that three previous weather data can be retrieved from the database.")
     print("Expected Result:")
@@ -312,7 +316,85 @@ if __name__ == "__main__":
     
     # Display all the weather data for one given weather station
     sql_db_retrieve_all_weather_data_for_one_ws(app, db, weather_stations[0])
+    
+    print("#####################")
+    print("###### Test 11 ######")
+    print("#####################")
+    print("Purpose:")
+    print("Check the following points:\
+    \n- The UDP server is well configured,\
+    \n- The UDP server retrieves properly all the messages,\
+    \n- The UDP server stores correctly all the messages inside the database,\
+    \n- The UDP server sends back correctly the acknowledgment to the UDP client.")
+    print("Expected Result:")
+    print(f"UDP server up and listening on {Config.deploy_ip_address}:{Config.udp_server_port_number}!")
+    print("Obtained Result:")
+    
+    # Create an UDP socket
+    udp_server_socket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
+    
+    # Bind the socket to the provided IP address and UDP port
+    udp_server_socket.bind((Config.deploy_ip_address, Config.udp_server_port_number))
+    
+    print(f"UDP server up and listening on {Config.deploy_ip_address}:{Config.udp_server_port_number}!")
+    
+    try:
+    
+        # Listen for incoming datagrams
+        while(True):
         
+            # Receive incoming messages
+            udp_bytes_address_pair = udp_server_socket.recvfrom(Config.udp_buffer_size)
+            
+            # Retrieve the messages and the IP address from the UDP client
+            udp_message = udp_bytes_address_pair[0]
+            udp_client_ip_address = udp_bytes_address_pair[1]
+            
+            # Acknowledge message received from the UDP client
+            udp_server_socket.sendto(Config.udp_ack_to_client_bytes, udp_client_ip_address)
+            
+            # Decode the received message:
+            current_station_name, current_station_description, current_temperature, current_humidity, current_luminosity = udp_decode_weather_data(udp_message)
+            
+            # Print the parsed data
+            print(f"Station Name: {current_station_name}")
+            print(f"Station Description: {current_station_description}")
+            print(f"Temperature: {current_temperature} °C")
+            print(f"Humidity: {current_humidity} %")
+            print(f"Luminosity: {current_luminosity} lux")
+            
+            current_weather_station = sql_db_retrieve_weather_station(app, db, current_station_name)
+            if current_weather_station.station_name == 'ERROR':
+                # The weather station is not present inside the database and shall be added
+                
+                # Create new weather station
+                new_weather_station = WeatherStation(station_name = current_station_name,
+                                                    station_description = current_station_description)
+                if sql_db_add_weather_station_into_db(app, db, new_weather_station) == 0:
+                    print("The following weather station has been successfully added into the database: " + current_station_name)
+                else:
+                    print("An error occurs during the adding of the following weather station: " + current_station_name)
+            else:
+                print("The weather station is already present inside the database, add the related weather data...")
+            
+            # Create one instance of Weather Data with the received information
+            received_weather_data = WeatherData(temperature = current_temperature, humidity = current_humidity, luminosity = current_luminosity, station_id = current_weather_station.get_station_id())
+            
+            # Add the received weather data inside the database
+            if sql_db_add_weather_data_for_one_ws(app, db, current_weather_station, received_weather_data) == 0:
+                print("The weather data has been successfully added inside the database!")
+            else:
+                print("An error occurs during the adding of the weather data inside the database...")
+                
+            # Display all the weather data for one given weather station
+            sql_db_retrieve_all_weather_data_for_one_ws(app, db, current_weather_station)
+            
+    except KeyboardInterrupt:
+        print("\nServer shutting down...")
+    finally:
+        # Close the socket
+        udp_server_socket.close()
+    
     # Finally, clean any modifications done during the test
     sql_db_delete_all_database(app, db)
         
