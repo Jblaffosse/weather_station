@@ -65,7 +65,7 @@ def forecasts():
 
     # Initialize the variable for the template
     web_page_content = {
-            'title' : 'Home Page'
+            'title' : 'Forecast'
             }
             
     if (request.method == 'POST') and (request.form['back_button'] == 'back'):
@@ -73,6 +73,19 @@ def forecasts():
     else:
         return render_template(Config.forecasts_html_file, web_page_content=web_page_content)
 
+@app.route('/configuration', methods=['GET', 'POST'])
+def configuration():
+
+    # Initialize the variable for the template
+    web_page_content = {
+            'title' : 'Configuration'
+            }
+            
+    if (request.method == 'POST') and (request.form['back_button'] == 'back'):
+        return redirect( url_for('index') )
+    else:
+        return render_template(Config.configuration_page, web_page_content=web_page_content)
+        
 # ==================================================
 # Classes
 # ==================================================

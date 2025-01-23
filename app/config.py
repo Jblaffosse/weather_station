@@ -61,6 +61,7 @@ class Config:
     # Define the name of the HTML files used for the application
     index_html_file = 'index.html'
     forecasts_html_file = 'forecasts.html'
+    configuration_page = 'configuration.html'
     error_404_page = '404.html'
     error_500_page = '500.html'
 

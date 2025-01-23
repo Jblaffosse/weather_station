@@ -21,8 +21,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         <!-- Display the title of the web page if properly defined -->
-        {% if title %}
-            <title>{{ web_page_content.title }} - Weather Station</title>
+        {% if web_page_content.title %}
+            <title>Weather Station - {{ web_page_content.title }}</title>
         {% else %}
             <title>Weather Station</title>
         {% endif %}
@@ -34,8 +34,9 @@
         <!-- Allow to declare all the tabs of the web application at the top -->
         <div>
             Weather Station:
-            <a href="{{ url_for('index') }}">Home</a>            
+            <a href="{{ url_for('index') }}">Home</a>
             <a href="{{ url_for('forecasts') }}">Forecasts</a>
+            <a href="{{ url_for('configuration') }}">Configuration</a>
             
             <!-- Add more link at the top of the page here -->
         </div>
