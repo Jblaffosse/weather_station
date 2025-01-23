@@ -162,6 +162,9 @@ def udp_initialize_and_start_udp_server(input_application, input_database):
                     print("The following weather station has been successfully added into the database: " + current_station_name)
                 else:
                     print("An error occurs during the adding of the following weather station: " + current_station_name)
+                
+                # Set the current station to the newly added weather station
+                current_weather_station = new_weather_station
             else:
                 print("The weather station is already present inside the database, add the related weather data...")
             

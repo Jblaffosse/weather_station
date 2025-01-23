@@ -48,47 +48,16 @@ def index():
     Returns:
         str: Rendered HTML page
     """
-    # Submit your the input value into a HTTP GET request
-    celsius = request.args.get("celsius", "")
-    # If input celsius value is detected
-    if celsius:
-        # Start the conversion
-        fahrenheit = fahrenheit_from(celsius)
-        msg_after_conversion = celsius + " °C = " + fahrenheit + " F"
-    else:
-        msg_after_conversion = ""
         
     # Initialize the variable for the template
     web_page_content = {
-            'title' : 'Home Page',
-            'msg_after_conversion' : msg_after_conversion
+            'title' : 'Home Page'
             }
             
     # Retrieve the list of all the weather stations
     current_list_of_ws, execution_code = sql_db_retrieve_all_weather_stations(app, db)
-    # current_list_of_ws = []
 
     return render_template(Config.index_html_file, web_page_content=web_page_content, weather_stations=current_list_of_ws)
-
-@app.route('/<int:celsius>', methods=['GET'])
-def fahrenheit_from(celsius):
-    """
-    Convert the input Celsius value into Fahrenheit degrees.
-    
-    Returns:
-        str: Converted value in Fahrenheit
-    """
-    try:
-        # Convert the input celsius value into Fahrenheit
-        fahrenheit = float(celsius) * 9 / 5 + 32
-        
-        # Round to three decimal places
-        fahrenheit = round(fahrenheit, 3) 
-        
-        # Return the converted value
-        return str(fahrenheit)
-    except ValueError:
-        return "invalid input"
 
 
 @app.route('/forecasts', methods=['GET', 'POST'])
