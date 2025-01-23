@@ -41,7 +41,7 @@ PIP="pip3"
 # Function to check if a Python package is installed
 check_package() {
     package=$1
-    echo "Checking for $package..."
+    echo "[INFO] Checking for $package..."
     $PYTHON -c "import $package" 2>/dev/null
 
     if [ $? -eq 0 ]; then
@@ -63,6 +63,45 @@ check_package() {
 # Main script
 # ==================================================
 
+# First, verify if python3 is correctly installed
+echo "################"
+echo "[INFO] Verify if python3 is installed..."
+$PYTHON --version >/dev/null 2>/dev/null
+if [ $? -eq 0 ]; then
+    echo "[OK] python3 is correctly installed!"
+else
+    echo "[ERROR] Please install python3 with the following command:"
+    echo "[ERROR] apt install python3"
+    echo "[ERROR] exit..."
+    exit 1
+fi
+
+
+# Then, install/check dependencies for AHT20 and TSL2591
+# as they need to be installed differently from others
+# python packages
+echo "################"
+echo "[INFO] Install Package related to AHT20..."
+pip3 install adafruit-circuitpython-ahtx0 >/dev/null 2>/dev/null
+if [ $? -eq 0 ]; then
+    echo "[OK] Package related to AHT20 is correctly installed!"
+else
+    echo "[ERROR] An error occurs during the installation of the package for ahtx0..."
+    echo "[ERROR] Please try again... exit..."
+    exit 1
+fi
+
+echo "################"
+echo "[INFO] Install Package related to TSL2591..."
+pip3 install adafruit-circuitpython-tsl2591 >/dev/null 2>/dev/null
+if [ $? -eq 0 ]; then
+    echo "[OK] Package related to TSL2591 is correctly installed!"
+else
+    echo "[ERROR] An error occurs during the installation of the package for tsl2591..."
+    echo "[ERROR] Please try again... exit..."
+    exit 1
+fi
+
 echo "Starting Python package check..."
 for package in "${REQUIRED_PACKAGES[@]}"; do
     echo "################"
@@ -71,3 +110,4 @@ done
 
 echo "################"
 echo "Package check complete."
+exit 0
