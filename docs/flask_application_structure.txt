@@ -1,0 +1,110 @@
+To declare and use global variables like app and db in a Flask application across multiple files, you can follow a modular approach with proper imports. Here's how you can structure your Flask application to achieve this:
+
+Directory Structure Example:
+==================================
+your_project/
+│
+├── app/
+│   ├── __init__.py   # Declare 'app' and 'db' here
+│   ├── models.py     # Define your database models
+│   ├── routes.py     # Define your application routes
+│
+├── run.py            # Entry point to start the Flask application
+==================================
+
+Code Implementation
+
+1. app/__init__.py
+This is where you initialize the Flask app and SQLAlchemy database instance:
+
+==================================
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+
+# Create global variables for app and db
+app = Flask(__name__)
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///example.db"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+db = SQLAlchemy(app)
+
+# Import routes to register them
+from app import routes
+==================================
+
+2. app/models.py
+Define your database models and import db from app.
+
+==================================
+from app import db
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+
+    def __repr__(self):
+        return f"<User {self.username}>"
+==================================
+
+3. app/routes.py
+Define your routes and import the app and db objects from app.
+
+==================================
+from app import app, db
+from flask import jsonify
+from app.models import User
+
+@app.route("/")
+def index():
+    return jsonify({"message": "Welcome to the Flask app!"})
+
+@app.route("/users")
+def get_users():
+    users = User.query.all()
+    return jsonify([{"id": user.id, "username": user.username} for user in users])
+==================================
+
+4. run.py
+This is the entry point for your Flask application.
+
+==================================
+from app import app, db
+
+# Create tables before starting the app (optional)
+with app.app_context():
+    db.create_all()
+
+if __name__ == "__main__":
+    app.run(debug=True)
+==================================
+
+Key Points
+Using Global Variables Across Files:
+
+The app and db variables are declared globally in app/__init__.py.
+They can be imported directly from app in other files (from app import app, db).
+Avoiding Circular Imports:
+
+Always import routes, models, or other files at the end of app/__init__.py after defining app and db.
+This prevents circular dependency issues.
+
+Modular Design:
+
+Keep your models, routes, and app configuration in separate files to maintain a clean and organized codebase.
+
+Example Usage
+To access the app and db objects:
+
+In app/routes.py:
+
+==================================
+from app import app, db
+==================================
+
+In app/models.py:
+
+==================================
+from app import db
+==================================
+
+This structure makes your app scalable and reusable. Let me know if you need further assistance! 😊
