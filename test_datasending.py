@@ -93,18 +93,22 @@ if __name__ == "__main__":
     test_weather_data = test_create_weather_data(1)
     
     # Encode the weather data
-    encoded_message = udp_encode_weather_data("Bathroom", "Inside weather station", test_weather_data.temperature, test_weather_data.humidity, test_weather_data.luminosity)
+    encoded_message = udp_encode_weather_data("Livingroom", "Inside weather station", test_weather_data.temperature, test_weather_data.humidity, test_weather_data.luminosity)
     
     # Create the datagram socket
-    udp_server_socket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
+    udp_client_socket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
     
     # Send a message to the UDP server
-    udp_server_socket.sendto(encoded_message, (Config.deploy_ip_address, Config.udp_server_port_number))
+    udp_client_socket.sendto(encoded_message, (Config.deploy_ip_address, Config.udp_server_port_number))
     
     print("Message correctly sent to the UDP server!") 
     
     # Wait for the acknowledgment from the UDP server
-    udp_message_from_server = udp_server_socket.recvfrom(Config.udp_buffer_size)
+    udp_message_from_server = udp_client_socket.recvfrom(Config.udp_buffer_size)
     
     print("Message from Server: {}".format(udp_message_from_server[0]))
+    
+    # Close the socket and exit properly the program
+    udp_client_socket.close()
+    exit(0)
     

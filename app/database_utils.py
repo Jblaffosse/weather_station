@@ -18,10 +18,10 @@
                     WARNING!! This is an irreversible action!
                     
                   - sql_db_display_weather_stations(): 
-                    Allows to display the given list of weather stations.
+                    Allows to display all the weather stations present inside the database.
                     
-                  - sql_db_display_weather_data(): 
-                    Allows to display the list of weather data.
+                  - sql_db_display_weather_data_for_one_ws(): 
+                    Allows to display all the weather data related to a given weather station.
                     
                   - sql_db_retrieve_all_weather_stations(): 
                     Allows to retrieve all the weather stations stored inside the provided database.
@@ -113,6 +113,48 @@ def sql_db_verify_if_db_exists(input_application, input_database):
 
 ##################
 
+def sql_db_show_all_tables(input_application, input_database):
+    """
+    Allows to show all the tables present in the database.
+    
+    Execution Code:
+        - 0: When no error has been detected during the display of the tables
+        - 1: When an error occurs during the display of the tables
+    """
+    # Initialize the Empty status to an error
+    execution_code = 1
+    
+    # First, verify if the database exists
+    if sql_db_verify_if_db_exists(input_application, input_database):
+    
+        # Then, try to retrieve all the tables inside the provided database
+        try:
+            # Set up an application context
+            with input_application.app_context():
+                # Get the table names
+                all_tables = input_database.metadata.tables.keys()
+            
+                # Display all the tables
+                print("Configured Tables in the Database:")
+                for table in all_tables:
+                    print(f"- {table}")
+                
+        except Exception as e:
+            print("An error occurred:", e)
+            # An error occurs during the query,
+            # Please verify the following pre-requisites:
+            # - The database shall be properly initialized
+            # - At least one table shall be declared inside the database
+            execution_code = 1
+        else:
+            # The query has been successfully executed on the database
+            # This means that the database exists, we can set the status to "True"
+            execution_code = 0
+
+    return execution_code
+
+##################
+
 def sql_db_delete_all_weather_data_related_to_one_WS(input_application, input_database, input_weather_station):
     """
     Allows to delete all the weather data related to the given weather station
@@ -201,78 +243,13 @@ def sql_db_delete_all_database(input_application, input_database):
 
 ##################
 
-def sql_db_display_weather_stations(input_weather_station_list):
+def sql_db_display_weather_stations(input_application, input_database):
     """
-    Allows to display the list of weather stations.
+    Allows to display all the weather stations present inside the database.
     
     Execution Code:
         - 0: When the list has been successfully displayed
         - 1: When an error occurs during the display
-    """
-    # Initialize the execution status to an error
-    execution_code = 1
-    
-    # First, verify the following conditions:
-    # - if the database exists; and 
-    # - if there is weather station inside the input list.
-    if len(input_weather_station_list) > 0:
-        
-        # Print all the weather stations present inside the database
-        for weather_station in input_weather_station_list:
-            print("Here the information of the weather station " + str(weather_station.id) + ":")
-            print("- Name of the weather station: " + weather_station.station_name)
-            print("- Description for the weather station: " + weather_station.station_description)
-        
-        # Set the execution code to 0 as the display was successfull
-        execution_code = 0
-
-    return execution_code
-
-##################
-
-def sql_db_display_weather_data(input_weather_data_list):
-    """
-    Allows to display the list of weather data.
-    
-    Execution Code:
-        - 0: When the list has been successfully displayed
-        - 1: When an error occurs during the display
-    """
-    # Initialize the execution status to an error
-    execution_code = 1
-    
-    # First, verify the following conditions:
-    # - if the database exists; and 
-    # - if there is weather station inside the input list.
-    if len(input_weather_data_list) > 0:
-    
-        print("Here the information of the weather station " + 
-        input_weather_data_list[0].related_station.station_name + 
-        " (" + input_weather_data_list[0].related_station.station_description + " - " +
-        str(input_weather_data_list[0].station_id) + "):")
-        
-        # Print all the weather data present inside the input list
-        for weather_data in input_weather_data_list:
-            print("# Weather data " + str(weather_data.id) + ":")
-            print("\t- Temperature: " + str(weather_data.temperature))
-            print("\t- Humidity: " + str(weather_data.humidity))
-            print("\t- Luminosity: " + str(weather_data.luminosity))
-        
-        # Set the execution code to 0 as the display was successfull
-        execution_code = 0
-
-    return execution_code
-
-##################
-
-def sql_db_retrieve_all_weather_stations(input_application, input_database):
-    """
-    Allows to retrieve all the weather stations stored inside the provided database.
-    
-    Returns:
-        Execution Code: 
-            - 0 when the weather stations are successfully retrieved from the database
-            - 1 when an error has been detected during the request
     """
     # Initialize the execution status to an error
     execution_code = 1
@@ -289,6 +266,16 @@ def sql_db_retrieve_all_weather_stations(input_application, input_database):
             
                 # Apply the query to the SQLAlchemy database
                 weather_stations = input_database.session.scalars(query).all()
+                
+                # Print all the weather stations present inside the database
+                for weather_station in weather_stations:
+                    print("Here the information of the weather station " + str(weather_station.id) + ":")
+                    print("- Name of the weather station: " + weather_station.station_name)
+                    print("- Description for the weather station: " + weather_station.station_description)
+                
+                # Set the execution code to 0 as the display was successfull
+                execution_code = 0
+        
         except Exception as e:
             print("An error occurred:", e)
             # An error occurs during the query,
@@ -296,11 +283,121 @@ def sql_db_retrieve_all_weather_stations(input_application, input_database):
             # - the database shall be properly initialized
             # - at least one weather station shall be declared inside it
             execution_code = 1
-        else:
-            # Print all the weather stations present inside the database
-            execution_code = sql_db_display_weather_stations(weather_stations)
 
     return execution_code
+
+##################
+
+def sql_db_display_weather_data_for_one_ws(input_application, input_database, input_weather_station):
+    """
+    Allows to display all the weather data related to a given weather station.
+    
+    Execution Code:
+        - 0: When the list has been successfully displayed
+        - 1: When an error occurs during the display
+    """
+    # Initialize the execution status to an error
+    execution_code = 1
+    
+    # First, verify if the database exists
+    if sql_db_verify_if_db_exists(input_application, input_database):
+    
+        # Try to retrieve all the weather stations inside the provided database
+        try:
+            # Set up an application context
+            with input_application.app_context():
+                
+                # Start a session
+                current_session = input_database.session
+                
+                # Construct the query to retrieve all the weather stations
+                query = sa.select(WeatherStation)
+            
+                # Apply the query to the SQLAlchemy database
+                weather_stations = current_session.scalars(query).all()
+                
+                # Parse all the weather stations present inside the database
+                for weather_station in weather_stations:
+                
+                    # Check the name of the weather station
+                    if weather_station.station_name == input_weather_station.station_name:
+                    
+                        # We have found the corresponding weather station inside the database
+                        print("Here the information of the weather station " + 
+                           input_weather_station.station_name + 
+                           " (" + input_weather_station.station_description + " - " +
+                           str(input_weather_station.id) + "):")
+                           
+                        # We can display all the related weather data
+                        
+                        # Construct the query to retrieve all the weather data
+                        data_query = weather_station.weather_datas.select()
+                        
+                        # Apply the query to the SQLAlchemy database
+                        weather_data = current_session.scalars(data_query).all()
+                        
+                        # Print all the weather data related to the given weather station
+                        for weather_data in weather_data:
+                            print("# Weather data " + str(weather_data.id) + ":")
+                            print("\t- Temperature: " + str(weather_data.temperature))
+                            print("\t- Humidity: " + str(weather_data.humidity))
+                            print("\t- Luminosity: " + str(weather_data.luminosity))
+       
+                        # Set the execution code to 0 as the display was successfull
+                        execution_code = 0
+        except Exception as e:
+            print("An error occurred:", e)
+        
+            # An error occurs during the query,
+            # Please verify the following pre-requisites:
+            # - the database shall be properly initialized
+            # - at least one weather station shall be declared inside it
+            execution_code = 1
+
+    return execution_code
+
+##################
+
+def sql_db_retrieve_all_weather_stations(input_application, input_database):
+    """
+    Allows to retrieve all the weather stations stored inside the provided database.
+    
+    Returns:
+        - The list of weather stations
+        - Execution Code: 
+            - 0 when the weather stations are successfully retrieved from the database
+            - 1 when an error has been detected during the request
+    """
+    # Initialize the list of weather station
+    list_weather_stations = []
+    
+    # Initialize the execution status to an error
+    execution_code = 1
+    
+    # First, verify if the database exists
+    if sql_db_verify_if_db_exists(input_application, input_database):
+    
+        # Try to retrieve all the weather stations inside the provided database
+        try:
+            # Set up an application context
+            with input_application.app_context():
+                # Construct the query to retrieve all the weather stations
+                query = sa.select(WeatherStation)
+            
+                # Apply the query to the SQLAlchemy database
+                list_weather_stations = input_database.session.scalars(query).all()
+        except Exception as e:
+            print("An error occurred:", e)
+            # An error occurs during the query,
+            # Please verify the following pre-requisites:
+            # - the database shall be properly initialized
+            # - at least one weather station shall be declared inside it
+            execution_code = 1
+        else:            
+            # No error has been detected during the query, we can return Success
+            execution_code = 0
+
+    return list_weather_stations, execution_code
 
 ##################
 
@@ -313,6 +410,9 @@ def sql_db_retrieve_all_weather_data_for_one_ws(input_application, input_databas
             - 0 when the weather data are successfully retrieved
             - 1 when an error has been detected during the request
     """
+    # Initialize the list of weather data
+    list_weather_data = []
+    
     # Initialize the execution status to an error
     execution_code = 1
     
@@ -346,10 +446,7 @@ def sql_db_retrieve_all_weather_data_for_one_ws(input_application, input_databas
                         data_query = weather_station.weather_datas.select()
                         
                         # Apply the query to the SQLAlchemy database
-                        weather_data = current_session.scalars(data_query).all()
-                        
-                        # Display all the related weather data
-                        execution_code = sql_db_display_weather_data(weather_data)
+                        list_weather_data = current_session.scalars(data_query).all()
         except Exception as e:
             print("An error occurred:", e)
         
@@ -358,8 +455,11 @@ def sql_db_retrieve_all_weather_data_for_one_ws(input_application, input_databas
             # - the database shall be properly initialized
             # - at least one weather station shall be declared inside it
             execution_code = 1
+        else:            
+            # No error has been detected during the query, we can return Success
+            execution_code = 0
 
-    return execution_code
+    return list_weather_data, execution_code
 
 ##################
 

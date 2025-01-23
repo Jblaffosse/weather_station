@@ -66,7 +66,7 @@ check_package() {
 # First, verify if python3 is correctly installed
 echo "################"
 echo "[INFO] Verify if python3 is installed..."
-$PYTHON --version >/dev/null 2>/dev/null
+$PYTHON --version
 if [ $? -eq 0 ]; then
     echo "[OK] python3 is correctly installed!"
 else
@@ -82,7 +82,7 @@ fi
 # python packages
 echo "################"
 echo "[INFO] Install Package related to AHT20..."
-pip3 install adafruit-circuitpython-ahtx0 >/dev/null 2>/dev/null
+pip3 install adafruit-circuitpython-ahtx0 2>/dev/null
 if [ $? -eq 0 ]; then
     echo "[OK] Package related to AHT20 is correctly installed!"
 else
@@ -93,7 +93,7 @@ fi
 
 echo "################"
 echo "[INFO] Install Package related to TSL2591..."
-pip3 install adafruit-circuitpython-tsl2591 >/dev/null 2>/dev/null
+pip3 install adafruit-circuitpython-tsl2591 2>/dev/null
 if [ $? -eq 0 ]; then
     echo "[OK] Package related to TSL2591 is correctly installed!"
 else

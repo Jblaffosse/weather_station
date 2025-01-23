@@ -25,8 +25,12 @@
 # ==================================================
 
 # Different imports corresponding to flask framework
-from app import app
+from app import app, db
 # is it useful ? TBD TODO set FLASK_APP=weather_station.py
+
+# Create tables before starting the app
+with app.app_context():
+    db.create_all()
 
 # Import configuration parameters
 from app.config import Config

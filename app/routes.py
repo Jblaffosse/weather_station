@@ -27,22 +27,13 @@ from app.config import Config
 # Import database model for the weather station
 from app.models import WeatherStation, WeatherData
 
+# Import all the functions related to the SQLAlchemy database library
+# (The library can be imported only if the databased was correctly declared and initialized)
+from app.database_utils import *
+
 # ==================================================
 # Constants
 # ==================================================
-
-# TODO - TBD: For test purpose, create two instances of weather station:
-weather_stations = [
-                    WeatherStation(id=101,
-                                    station_name='Bedroom',
-                                    station_description='Master bedroom'),
-                    WeatherStation(id=102,
-                                    station_name='Living Room',
-                                    station_description='Living room with kitchen')
-                                    ]
-
-# TODO - TBD: For test purpose, declare a sample of weather data
-data = WeatherData(temperature = 25.0, humidity = 85.2, luminosity = 54.3, station_id = weather_stations[0].get_station_id())
 
 # ==================================================
 # Functions
@@ -72,8 +63,12 @@ def index():
             'title' : 'Home Page',
             'msg_after_conversion' : msg_after_conversion
             }
+            
+    # Retrieve the list of all the weather stations
+    current_list_of_ws, execution_code = sql_db_retrieve_all_weather_stations(app, db)
+    # current_list_of_ws = []
 
-    return render_template(Config.index_html_file, web_page_content=web_page_content, weather_stations=weather_stations)
+    return render_template(Config.index_html_file, web_page_content=web_page_content, weather_stations=current_list_of_ws)
 
 @app.route('/<int:celsius>', methods=['GET'])
 def fahrenheit_from(celsius):

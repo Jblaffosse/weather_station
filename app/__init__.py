@@ -31,11 +31,19 @@ from flask import Flask
 from app.config import Config
 
 # Import for SQLAlchemy 
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
+import sqlalchemy as sa
+import sqlalchemy.orm as so
+# from app import app
 
-# DEBUG
+# Import time
 import time
+from datetime import datetime, timezone
+
+# Import for SQLAlchemy 
+from flask_sqlalchemy import SQLAlchemy
+
+# Import threading used to execute the UDP server inside a dedicated thread
+import threading
 
 # ==================================================
 # Constants
@@ -43,25 +51,34 @@ import time
 
 # Configuration parameters have been declared inside "config.py"
 
-# Create the SQLAlchemy database
-db = SQLAlchemy()
-
 # Create flask application as an instance of the Flask class
 app = Flask(__name__)
 app.config.from_object(Config)
 
-db.init_app(app)
-with app.app_context():
-    db.create_all()
-
-#  Create the migration engine related to the flask application and the database
-migrate = Migrate(app, db)
+# Create the SQLAlchemy database
+db = SQLAlchemy(app)
 
 # Import routes and models following the initialization 
 # of the flask app and the SQLAlchemy database
 from app import routes, models, errors
 
-# TBD TODO add the UDP server code here using threading
+# Import the library used to initialize and start the UDP server
+from app.data_transmission_utils import *
+
+if sql_db_show_all_tables(app, db) == 0:
+    print("The tables have been properly declared inside the database!")
+else:
+    print("An error occurs during the retrieving of the tables inside the database...")
+
+# Start the UDP server in a separate thread
+udp_thread = threading.Thread(target = udp_initialize_and_start_udp_server, args = (app, db))
+
+# Daemonize thread to close with the app
+udp_thread.daemon = True
+
+# Start the thread
+udp_thread.start()
+
 
 
 # ==================================================
