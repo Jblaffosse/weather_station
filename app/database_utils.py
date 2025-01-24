@@ -288,7 +288,7 @@ def sql_db_display_weather_stations(input_application, input_database):
 
 ##################
 
-def sql_db_display_weather_data_for_one_ws(input_application, input_database, input_weather_station):
+def sql_db_display_weather_data_for_one_ws(input_application, input_database, input_weather_station_name):
     """
     Allows to display all the weather data related to a given weather station.
     
@@ -320,13 +320,7 @@ def sql_db_display_weather_data_for_one_ws(input_application, input_database, in
                 for weather_station in weather_stations:
                 
                     # Check the name of the weather station
-                    if weather_station.station_name == input_weather_station.station_name:
-                    
-                        # We have found the corresponding weather station inside the database
-                        print("Here the information of the weather station " + 
-                           input_weather_station.station_name + 
-                           " (" + input_weather_station.station_description + " - " +
-                           str(input_weather_station.id) + "):")
+                    if weather_station.station_name == input_weather_station_name:
                            
                         # We can display all the related weather data
                         
@@ -401,7 +395,7 @@ def sql_db_retrieve_all_weather_stations(input_application, input_database):
 
 ##################
 
-def sql_db_retrieve_all_weather_data_for_one_ws(input_application, input_database, input_weather_station):
+def sql_db_retrieve_all_weather_data_for_one_ws(input_application, input_database, input_weather_station_name):
     """
     Allows to retrieve all the weather data for one given weather station
     
@@ -437,7 +431,7 @@ def sql_db_retrieve_all_weather_data_for_one_ws(input_application, input_databas
                 for weather_station in weather_stations:
                 
                     # Check the name of the weather station
-                    if weather_station.station_name == input_weather_station.station_name:
+                    if weather_station.station_name == input_weather_station_name:
                     
                         # We have found the corresponding weather station inside the database
                         # We can display all the related weather data

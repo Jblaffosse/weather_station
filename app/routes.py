@@ -18,7 +18,7 @@
 from app import app, db
 
 # Different imports corresponding to flask framework
-from flask import request
+from flask import request, jsonify
 from flask import render_template, redirect, url_for
 
 # Import configuration parameters
@@ -59,6 +59,22 @@ def index():
 
     return render_template(Config.index_html_file, web_page_content=web_page_content, weather_stations=current_list_of_ws)
 
+@app.route("/get_station_data_by_name/<string:station_name>")
+def get_station_data(station_name):
+    
+    sql_db_display_weather_data_for_one_ws(app, db, station_name)
+
+    # Fetch weather data for the selected station
+    # JBL TBD TODO: order time for the weather data?
+    weather_data, execution_code = sql_db_retrieve_all_weather_data_for_one_ws(app, db, station_name)
+    
+    # Prepare the data for the graph
+    data = {
+        "timestamps": [data.timestamp.isoformat() for data in weather_data],
+        "temperatures": [data.temperature for data in weather_data],
+        "humidities": [data.humidity for data in weather_data]
+    }
+    return jsonify(data)
 
 @app.route('/forecasts', methods=['GET', 'POST'])
 def forecasts():

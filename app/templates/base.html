@@ -14,8 +14,8 @@
 =========================================================
 -->
 
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,18 +32,23 @@
     </head>
     <body>
         <!-- Allow to declare all the tabs of the web application at the top -->
-        <div>
-            Weather Station:
-            <a href="{{ url_for('index') }}">Home</a>
-            <a href="{{ url_for('forecasts') }}">Forecasts</a>
-            <a href="{{ url_for('configuration') }}">Configuration</a>
-            
-            <!-- Add more link at the top of the page here -->
-        </div>
+        <header>
+            <!-- JBL TBD TODO - Do we need the "div" tags? -->
+            <div>
+                Weather Station:
+                <a href="{{ url_for('index') }}">Home</a>
+                <a href="{{ url_for('forecasts') }}">Forecasts</a>
+                <a href="{{ url_for('configuration') }}">Configuration</a>
+                
+                <!-- Add more link at the top of the page here -->
+            </div>
+        </header>
         
-        <!-- All the web pages will be integrated between the following tags: -->
-        {% block page_content %}{% endblock %}
+        <main>
+            <!-- All the web pages will be integrated between the following tags: -->
+            {% block page_content %}{% endblock %}
+        </main>
         
         <!-- You can define other specific block if needed -->
     </body>
-<html>
+</html>

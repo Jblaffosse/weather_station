@@ -93,7 +93,7 @@ if __name__ == "__main__":
     test_weather_data = test_create_weather_data(1)
     
     # Encode the weather data
-    encoded_message = udp_encode_weather_data("Bedroom", "Inside weather station", test_weather_data.temperature, test_weather_data.humidity, test_weather_data.luminosity)
+    encoded_message = udp_encode_weather_data("Bathroom", "Inside weather station", test_weather_data.temperature, test_weather_data.humidity, test_weather_data.luminosity)
     
     # Create the datagram socket
     udp_client_socket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)

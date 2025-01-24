@@ -178,7 +178,7 @@ def udp_initialize_and_start_udp_server(input_application, input_database):
                 print("An error occurs during the adding of the weather data inside the database...")
                 
             # Display all the weather data for one given weather station
-            sql_db_display_weather_data_for_one_ws(input_application, input_database, current_weather_station)
+            sql_db_display_weather_data_for_one_ws(input_application, input_database, current_weather_station.station_name)
             
     except KeyboardInterrupt:
         print("\nServer shutting down...")

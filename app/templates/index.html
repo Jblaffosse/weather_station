@@ -17,11 +17,100 @@
 {% extends "base.html" %}
 
 {% block page_content %}
-        <h1>Congratulations, this is your first web app!</h1>
+
+    <!--div class="container"-->
+        <h1>Welcome to the web page for the Weather Station!</h1>
+        <h2>Please select a weather station...</h2>
         
+        <form id="station-form">
+            <select id="station-select" class="form-select">
+                <option value="">-- Select a Station --</option>
+                {% for station in weather_stations %}
+                    <option value="{{ station.station_name }}">{{ station.station_name }}</option>
+                {% endfor %}
+            </select>
+        </form>
+        <!-- Previous display - JBL TBD TODO to remove
         {% for weather_station in weather_stations %}
         <div>
             <p><b>{{ weather_station.station_name }}</b><br>{{ weather_station.station_description }}</p>
         </div>
         {% endfor %}
+        -->
+
+        <canvas id="weather-chart" width="800" height="400" style="margin-top: 20px;"></canvas>
+    <!--/div-->
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const chartContext = document.getElementById('weather-chart').getContext('2d');
+        let weatherChart = new Chart(chartContext, {
+            type: 'line',
+            data: {
+                labels: [], // Timestamps
+                datasets: [
+                    {
+                        label: 'Temperature (°C)',
+                        data: [],
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        yAxisID: 'y1',
+                    },
+                    {
+                        label: 'Humidity (%)',
+                        data: [],
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        yAxisID: 'y2',
+                    },
+                ],
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y1: {
+                        type: 'linear',
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: 'Temperature (°C)',
+                        },
+                    },
+                    y2: {
+                        type: 'linear',
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: 'Humidity (%)',
+                        },
+                    },
+                },
+                plugins: {
+                    tooltip: {
+                        mode: 'nearest',
+                        intersect: false,
+                    },
+                },
+            },
+        });
+
+        // Fetch data for the selected station and update the chart
+        document.getElementById('station-select').addEventListener('change', async function () {
+            const stationName = this.value; // Get the selected station name
+            if (stationName) {
+                const response = await fetch(`/get_station_data_by_name/${stationName}`);
+                const data = await response.json();
+
+                if (response.ok) {
+                    weatherChart.data.labels = data.timestamps;
+                    weatherChart.data.datasets[0].data = data.temperatures;
+                    weatherChart.data.datasets[1].data = data.humidities;
+                    weatherChart.update();
+                } else {
+                    alert(data.error || "An error occurred while fetching data.");
+                }
+            }
+        });
+    </script>
 {% endblock %}
+

@@ -255,7 +255,7 @@ if __name__ == "__main__":
     print("Obtained Result:")
     
     # Display all the weather data for one given weather station
-    sql_db_display_weather_data_for_one_ws(app, db, weather_stations[0])
+    sql_db_display_weather_data_for_one_ws(app, db, weather_stations[0].station_name)
     
     print("#####################")
     print("###### Test 11 ######")
