@@ -80,7 +80,7 @@ def get_station_data(station_name):
             'title' : 'Get Weather Station'
             }
     
-    sql_db_display_weather_data_for_one_ws(app, db, station_name)
+    # DEBUG - sql_db_display_weather_data_for_one_ws(app, db, station_name)
 
     # Fetch weather data for the selected station
     weather_data, execution_code = sql_db_retrieve_all_weather_data_for_one_ws(app, db, station_name)
