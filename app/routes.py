@@ -61,6 +61,17 @@ def index():
 
 @app.route("/get_station_data_by_name/<string:station_name>")
 def get_station_data(station_name):
+    """
+    Flask route to retrieve all the weather data related to the given weather station
+    
+    Returns:
+        str: Rendered HTML page
+    """
+        
+    # Initialize the variable for the template
+    web_page_content = {
+            'title' : 'Get Weather Station'
+            }
     
     sql_db_display_weather_data_for_one_ws(app, db, station_name)
 
@@ -78,6 +89,12 @@ def get_station_data(station_name):
 
 @app.route('/forecasts', methods=['GET', 'POST'])
 def forecasts():
+    """
+    Flask route to render the forecast web page.
+    
+    Returns:
+        str: Rendered HTML page
+    """
 
     # Initialize the variable for the template
     web_page_content = {
@@ -91,6 +108,12 @@ def forecasts():
 
 @app.route('/configuration', methods=['GET', 'POST'])
 def configuration():
+    """
+    Flask route to render the configuration page.
+    
+    Returns:
+        str: Rendered HTML page
+    """
 
     # Initialize the variable for the template
     web_page_content = {

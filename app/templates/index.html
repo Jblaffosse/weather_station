@@ -30,13 +30,6 @@
                 {% endfor %}
             </select>
         </form>
-        <!-- Previous display - JBL TBD TODO to remove
-        {% for weather_station in weather_stations %}
-        <div>
-            <p><b>{{ weather_station.station_name }}</b><br>{{ weather_station.station_description }}</p>
-        </div>
-        {% endfor %}
-        -->
 
         <canvas id="weather-chart" width="800" height="400" style="margin-top: 20px;"></canvas>
     <!--/div-->
@@ -94,23 +87,47 @@
             },
         });
 
-        // Fetch data for the selected station and update the chart
-        document.getElementById('station-select').addEventListener('change', async function () {
-            const stationName = this.value; // Get the selected station name
-            if (stationName) {
+        let selectedStation = null; // Store the currently selected station
+        let pollingInterval = null; // Store the interval ID for polling
+
+        // Function to fetch data and update the chart
+        async function fetchWeatherData(stationName) {
+            if (!stationName) return;
+
+            try {
                 const response = await fetch(`/get_station_data_by_name/${stationName}`);
                 const data = await response.json();
 
                 if (response.ok) {
+                    // Update chart data
                     weatherChart.data.labels = data.timestamps;
                     weatherChart.data.datasets[0].data = data.temperatures;
                     weatherChart.data.datasets[1].data = data.humidities;
                     weatherChart.update();
                 } else {
-                    alert(data.error || "An error occurred while fetching data.");
+                    console.error("Error fetching data:", data.error);
                 }
+            } catch (error) {
+                console.error("Error fetching weather data:", error);
+            }
+        }
+
+        // Event listener for station selection
+        document.getElementById('station-select').addEventListener('change', function () {
+            selectedStation = this.value; // Update the selected station
+            if (selectedStation) {
+                fetchWeatherData(selectedStation); // Fetch data immediately
+
+                // Stop any previous polling
+                if (pollingInterval) clearInterval(pollingInterval);
+
+                // Start polling every 5 seconds
+                pollingInterval = setInterval(() => {
+                    fetchWeatherData(selectedStation);
+                }, 5000);
             }
         });
     </script>
+
 {% endblock %}
 

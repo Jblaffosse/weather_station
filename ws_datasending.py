@@ -61,6 +61,9 @@ from app.models import WeatherStation, WeatherData
 # Flag to control the main loop
 main_loop = True
 
+# Data acquisition period (in seconds)
+data_acquisition_period = 60
+
 # Declare the name of the weather station
 weather_station_name = "Bedroom"
 
@@ -164,7 +167,7 @@ if __name__ == "__main__":
             print("# Message from Server: {}".format(udp_message_from_server[0]))
             
             # Wait for 2 seconds
-            time.sleep(2)
+            time.sleep(data_acquisition_period)
         
     except KeyboardInterrupt:
         print("# Program interrupted by user. Exiting...")
