@@ -37,13 +37,38 @@ from app import app, db
 # Declare the error page when the requested URL is incorrect
 @app.errorhandler(404)
 def not_found_error(error):
-    return render_template(Config.error_404_page), 404
+    """
+    Flask route to display the error page when the requested URL is incorrect
+    
+    Returns:
+        str: Rendered HTML page
+    """
+        
+    # Initialize the variable for the template
+    web_page_content = {
+            'title' : 'Get Weather Station'
+            }
+    
+    return render_template(Config.error_404_page, web_page_content=web_page_content), 404
     
 # Declare the error page 500 when an internal error has occured inside the server
 @app.errorhandler(500)
 def internal_error(error):
+    """
+    Flask route to display the error page 500 when an internal error has occured inside the server
+    
+    Returns:
+        str: Rendered HTML page
+    """
+        
+    # Initialize the variable for the template
+    web_page_content = {
+            'title' : 'Get Weather Station'
+            }
+    
     db.session.rollback()
-    return render_template(Config.error_500_page), 500
+    
+    return render_template(Config.error_500_page, web_page_content=web_page_content), 500
 
 # ==================================================
 # Classes
