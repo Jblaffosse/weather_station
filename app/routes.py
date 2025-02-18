@@ -31,9 +31,16 @@ from app.models import WeatherStation, WeatherData
 # (The library can be imported only if the databased was correctly declared and initialized)
 from app.database_utils import *
 
+# Import librairies to change timezone and display of timestamps
+from datetime import datetime
+import pytz
+
 # ==================================================
 # Constants
 # ==================================================
+
+# Define target timezone (example : UTC-5)
+target_timezone = pytz.timezone('America/New_York')
 
 # ==================================================
 # Functions
@@ -76,12 +83,11 @@ def get_station_data(station_name):
     sql_db_display_weather_data_for_one_ws(app, db, station_name)
 
     # Fetch weather data for the selected station
-    # JBL TBD TODO: order time for the weather data?
     weather_data, execution_code = sql_db_retrieve_all_weather_data_for_one_ws(app, db, station_name)
     
     # Prepare the data for the graph
     data = {
-        "timestamps": [data.timestamp.isoformat() for data in weather_data],
+        "timestamps": [data.timestamp.astimezone(target_timezone).strftime('%Y-%m-%d %H:%M') for data in weather_data],
         "temperatures": [data.temperature for data in weather_data],
         "humidities": [data.humidity for data in weather_data]
     }
