@@ -34,6 +34,9 @@ PYTHON="python3"
 # Pip interpreter
 PIP="pip3"
 
+# Requirements file defining all the python packages required
+REQUIREMENTS_FILE="./requirements.txt"
+
 # ==================================================
 # Functions
 # ==================================================
@@ -73,7 +76,7 @@ else
     echo "[ERROR] Please install python3 with the following command:"
     echo "[ERROR] apt install python3"
     echo "[ERROR] exit..."
-    exit 1
+    exit 3
 fi
 
 
@@ -82,27 +85,40 @@ fi
 # python packages
 echo "################"
 echo "[INFO] Install Package related to AHT20..."
-pip3 install adafruit-circuitpython-ahtx0 2>/dev/null
+$PIP install adafruit-circuitpython-ahtx0 2>/dev/null
 if [ $? -eq 0 ]; then
     echo "[OK] Package related to AHT20 is correctly installed!"
 else
     echo "[ERROR] An error occurs during the installation of the package for ahtx0..."
     echo "[ERROR] Please try again... exit..."
-    exit 1
+    exit 5
 fi
 
 echo "################"
 echo "[INFO] Install Package related to TSL2591..."
-pip3 install adafruit-circuitpython-tsl2591 2>/dev/null
+$PIP install adafruit-circuitpython-tsl2591 2>/dev/null
 if [ $? -eq 0 ]; then
     echo "[OK] Package related to TSL2591 is correctly installed!"
 else
     echo "[ERROR] An error occurs during the installation of the package for tsl2591..."
     echo "[ERROR] Please try again... exit..."
-    exit 1
+    exit 7
 fi
 
-echo "Starting Python package check..."
+# Install all the packages as specified inside the "requirements.txt" file
+echo "################"
+echo "[INFO] Install all required python packages..."
+$PIP install -r $REQUIREMENTS_FILE
+if [ $? -eq 0 ]; then
+    echo "[OK] All python packages have been successfully installed!"
+else
+    echo "[ERROR] An error occurs during the installation of the python packages..."
+    echo "[ERROR] Please try again... exit..."
+    exit 9
+fi
+
+
+echo "Verify if all the required Python packages are correctly installed..."
 for package in "${REQUIRED_PACKAGES[@]}"; do
     echo "################"
     check_package $package
