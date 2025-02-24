@@ -41,13 +41,13 @@ class Config:
 
     # Define the IP address used to deployed the web application
     # and also the UDP server
-    deploy_ip_address = "127.0.0.1"
+    deploy_ip_address = "0.0.0.0"
     
     # Define the port used to deployed the UDP server
     udp_server_port_number = 10501
     
     # Define the port used to deployed the web application
-    deploy_port_number = 5000
+    deploy_port_number = 10500
     
     # Define the size of the UDP packets exchanged between
     # the UDP client and the UDP server
