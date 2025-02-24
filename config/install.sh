@@ -35,7 +35,7 @@ PYTHON="python3"
 PIP="pip3"
 
 # Requirements file defining all the python packages required
-REQUIREMENTS_FILE="./requirements.txt"
+REQUIREMENTS_FILE="../requirements.txt"
 
 # ==================================================
 # Functions
