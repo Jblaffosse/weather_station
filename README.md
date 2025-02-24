@@ -24,6 +24,24 @@ GPIO 3 - SCL (Pin 5) <-> SCL (Yellow)
 
 Ground (Pin 9) <-> GND (Black)
 
+## Pre-requisites
+
+First, make sure that your environment has the following pre-requisites:
+
+- Python3, you can check using the following command:
+
+```bash
+python3 --version
+```
+
+- Docker Engine needs to be properly installed on your computer.
+You can check using the following command:
+
+```bash
+docker run hello-world
+```
+Otherwise, you can install docker engine by following these [instructions](https://docs.docker.com/engine/install/debian/).
+
 
 ## Installation
 
@@ -153,6 +171,27 @@ $ python -m pip install flask-sqlalchemy
 $ python -m pip install flask-migrate
 ```
 
+- Impossible to execute docker without sudo:
+
+```bash
+$ docker run hello-world
+docker: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Head "http://%2Fvar%2Frun%2Fdocker.sock/_ping": dial unix /var/run/docker.sock: connect: permission denied
+
+Run 'docker run --help' for more information
+```
+
+**Correction:**
+
+The steps to correct this issue are presented on this [website](https://docs.docker.com/engine/install/linux-postinstall/).
+You need to create an unix group called "docker" (if not already created), then add any user inside "docker" group.
+
+```bash
+$ sudo groupadd docker
+$ sudo usermod -aG docker $USER
+$ newgrp docker
+# Test again the docker command without sudo:
+$ docker run hello-world
+```
 
 ## License
 None

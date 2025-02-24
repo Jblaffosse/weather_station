@@ -22,7 +22,7 @@ COPY . /app
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Exposer le port utilisé par Flask (par défaut 5000)
-EXPOSE 10500
+EXPOSE 5000
 
 # Exposer le port utilisé par le server UDP
 EXPOSE 10501

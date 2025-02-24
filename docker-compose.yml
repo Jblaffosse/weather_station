@@ -5,7 +5,7 @@ services:
     build: .
     container_name: flask_weather_station
     ports:
-      - "10500:10500"
+      - "5000:5000"
       - "10501:10501"
     volumes:
       - .:/app

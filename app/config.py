@@ -47,7 +47,7 @@ class Config:
     udp_server_port_number = 10501
     
     # Define the port used to deployed the web application
-    deploy_port_number = 10500
+    deploy_port_number = 5000
     
     # Define the size of the UDP packets exchanged between
     # the UDP client and the UDP server
